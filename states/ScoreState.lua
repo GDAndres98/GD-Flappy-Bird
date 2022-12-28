@@ -7,13 +7,16 @@ function ScoreState:enter(params)
 end
 
 function ScoreState:update(dt)
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or love.mouse.wasPressed(1) then
-        gStateMachine:change('countdown')
+    if love.keyboard.wasPressed('enter') or
+        love.keyboard.wasPressed('return') or
+        love.mouse.wasPressed(2) then
+            gStateMachine:change('countdown')
     end
 end
 
 function ScoreState:render()
 
+    love.graphics.setFont(flappyFont)
     if self.score >= 10 then
         love.graphics.printf('Good game!', 0, 64, VIRTUAL_WIDTH, 'center')
         love.graphics.setFont(mediumFont)

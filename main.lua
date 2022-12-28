@@ -10,15 +10,13 @@ VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
 local background = love.graphics.newImage('res/background.png')
-local backgroundScroll = 0
+backgroundScroll = 0
 
 local ground = love.graphics.newImage('res/ground.png')
-local groundScroll = 0
+groundScroll = 0
 
 GROUND_SCROLL_SPEED = 60
-local BACKGROUND_SCROLL_SPEED = GROUND_SCROLL_SPEED / 2
 
-local BACKGROUND_LOOPING_POINT = 413
 
 require 'Bird'
 require 'Pipe'
@@ -29,6 +27,7 @@ require 'states/TitleScreenState'
 require 'states/PlayState'
 require 'states/ScoreState'
 require 'states/CountdownState'
+require 'states/PauseState'
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -46,6 +45,7 @@ function love.load()
         ['explosion'] = love.audio.newSource('res/explosion.wav', 'static'),
         ['hurt'] = love.audio.newSource('res/hurt.wav', 'static'),
         ['score'] = love.audio.newSource('res/score.wav', 'static'),
+        ['pause'] = love.audio.newSource('res/pause.wav', 'static'),
         ['music'] = love.audio.newSource('res/marios_way.mp3', 'static')
     }
 
@@ -63,6 +63,7 @@ function love.load()
         ['play'] = function() return PlayState() end,
         ['score'] = function() return ScoreState() end,
         ['countdown'] = function() return CountdownState() end,
+        ['pause'] = function() return PauseState() end,
     }
     gStateMachine:change('title')
 
@@ -98,9 +99,6 @@ function love.mouse.wasPressed(button)
 end
 
 function love.update(dt)
-
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
     gStateMachine:update(dt)
 

@@ -1,7 +1,10 @@
-TitleScreenState = Class{__includes = BaseState}
+TitleScreenState = Class { __includes = BaseState }
 
 function TitleScreenState:update(dt)
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') or love.mouse.wasPressed(1) then
+    if love.keyboard.wasPressed('enter') or
+        love.keyboard.wasPressed('return') or
+        love.mouse.wasPressed(1) or
+        love.mouse.wasPressed(2) then
         gStateMachine:change('countdown')
     end
 end
