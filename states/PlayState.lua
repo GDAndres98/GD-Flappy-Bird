@@ -5,6 +5,7 @@ function PlayState:init()
     self.pipePairs = {}
     self.timer = 0
     self.score = 0
+    self.nextPipeTimer = 0.5
 
     self.lastY = math.random(80) + 20
 end
@@ -13,7 +14,7 @@ function PlayState:update(dt)
 
 
     self.timer = self.timer + dt
-    if self.timer > 3 then
+    if self.timer > self.nextPipeTimer then
 
         local y = math.max(10,
             math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90))
@@ -21,6 +22,7 @@ function PlayState:update(dt)
 
         table.insert(self.pipePairs, PipePair(y))
         self.timer = 0
+        self.nextPipeTimer = math.random(2, 3)
     end
 
     self.bird:update(dt)
