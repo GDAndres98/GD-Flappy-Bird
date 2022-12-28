@@ -20,7 +20,6 @@ local BACKGROUND_SCROLL_SPEED = GROUND_SCROLL_SPEED / 2
 
 local BACKGROUND_LOOPING_POINT = 413
 
-
 require 'Bird'
 require 'Pipe'
 require 'PipePair'
