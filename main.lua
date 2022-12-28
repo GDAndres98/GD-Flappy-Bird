@@ -69,6 +69,7 @@ function love.load()
 
 
     love.keyboard.keysPressed = {}
+    love.mouse.buttonsPressed = {}
 
 end
 
@@ -84,8 +85,17 @@ function love.keypressed(key)
     end
 end
 
+function love.mousepressed(x, y, button)
+    love.keyboard.keysPressed[button] = true
+    love.mouse.buttonsPressed[button] = true
+end
+
 function love.keyboard.wasPressed(key)
     return love.keyboard.keysPressed[key]
+end
+
+function love.mouse.wasPressed(button)
+    return love.mouse.buttonsPressed[button]
 end
 
 function love.update(dt)
@@ -96,6 +106,7 @@ function love.update(dt)
     gStateMachine:update(dt)
 
     love.keyboard.keysPressed = {}
+    love.mouse.buttonsPressed = {}
 
 end
 
@@ -103,7 +114,6 @@ function love.draw()
     push:start()
 
     love.graphics.draw(background, -backgroundScroll, 0)
-
     gStateMachine:render()
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
 
