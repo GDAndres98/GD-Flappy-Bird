@@ -3,8 +3,8 @@ Class = require 'class'
 
 GROUND_SCROLL_SPEED = 60
 
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
 
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
@@ -31,6 +31,8 @@ local pipePairs = {}
 local spawnTimer = 0
 
 local lastY = math.random(80) + 20
+
+local scrolling = true
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -64,27 +66,37 @@ function love.keyboard.wasPressed(key)
 end
 
 function love.update(dt)
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
-    spawnTimer = spawnTimer + dt
-    if spawnTimer > 3 then
+    if scrolling then
 
-        local y = math.max(10,
-            math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90))
-        lastY = y
+        backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+        groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
-        table.insert(pipePairs, PipePair(y))
-        spawnTimer = 0
-    end
+        spawnTimer = spawnTimer + dt
+        if spawnTimer > 3 then
 
-    bird:update(dt)
+            local y = math.max(10,
+                math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90))
+            lastY = y
 
-    for k, pair in pairs(pipePairs) do
-        pair:update(dt)
-        if pair.remove then
-            table.remove(pipePairs, k)
+            table.insert(pipePairs, PipePair(y))
+            spawnTimer = 0
         end
+
+        bird:update(dt)
+
+        for k, pair in pairs(pipePairs) do
+            pair:update(dt)
+
+            if bird:collides(pair.pipes.upper) or bird:collides(pair.pipes.lower) then
+                scrolling = false
+            end
+
+            if pair.remove then
+                table.remove(pipePairs, k)
+            end
+        end
+
     end
 
 
@@ -94,7 +106,7 @@ end
 function love.draw()
     push:start()
     love.graphics.draw(background, -backgroundScroll, 0)
-    
+
     for k, pair in pairs(pipePairs) do
         pair:render()
     end

@@ -7,7 +7,7 @@ function PipePair:init(y)
     self.y = y
 
     self.pipes = {}
-    self.pipes.upper = Pipe('top', self.y)
+    self.pipes.upper = Pipe('top', self.y - PIPE_HEIGHT)
     self.pipes.lower = Pipe('bottom', self.y + GAP_HEIGHT)
     
     self.remove = false
