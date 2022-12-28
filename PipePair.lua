@@ -11,6 +11,7 @@ function PipePair:init(y)
     self.pipes.lower = Pipe('bottom', self.y + GAP_HEIGHT)
     
     self.remove = false
+    self.scored = false
 end
 
 function PipePair:render()
